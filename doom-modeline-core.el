@@ -815,8 +815,8 @@ If DEFAULT is non-nil, set the default mode-line for all buffers."
 (defsubst doom-modeline-vspc ()
   "Text style with icons in mode-line."
   (propertize " " 'face (if (doom-modeline--active)
-                            'variable-pitch
-                          '(:inherit (variable-pitch mode-line-inactive)))))
+                            '(:inherit (mode-line variable-pitch))
+                          '(:inherit (mode-line-inactive variable-pitch)))))
 
 (defun doom-modeline--font-height ()
   "Calculate the actual char height of the mode-line."
