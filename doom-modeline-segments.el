@@ -222,7 +222,7 @@ buffer where knowing the current project directory is important."
             (and doom-modeline-major-mode-icon
                  (concat (doom-modeline-icon
                           'octicon "file-directory" "🖿" ""
-                          :face face :v-adjust -0.05 :height (* 1.25 doom-modeline-icons-scale-factor))
+                          :face face :v-adjust (* -0.05 doom-modeline-icons-v-adjust-factor) :height (* 1.25 doom-modeline-icons-scale-factor))
                          (doom-modeline-vspc)))
             (propertize (abbreviate-file-name default-directory) 'face face))))
 
@@ -239,10 +239,10 @@ buffer where knowing the current project directory is important."
                             (doom-modeline-icon 'faicon "file-o" nil nil
                                                 :face 'all-the-icons-dsilver
                                                 :height (* 0.9 doom-modeline-icons-scale-factor)
-                                                :v-adjust 0.0)
+                                                :v-adjust (* 0.0 doom-modeline-icons-v-adjust-factor))
                           icon)
                         'help-echo (format "Major-mode: %s" (format-mode-line mode-name))
-                        'display '(raise -0.135))))))
+                        'display `(raise ,(* -0.135 doom-modeline-icons-v-adjust-factor)))))))
 (add-hook 'find-file-hook #'doom-modeline-update-buffer-file-icon)
 (add-hook 'after-change-major-mode-hook #'doom-modeline-update-buffer-file-icon)
 (add-hook 'clone-indirect-buffer-hook #'doom-modeline-update-buffer-file-icon)
@@ -263,7 +263,7 @@ Uses `all-the-icons-material' to fetch the icon."
   (doom-modeline-icon 'material icon unicode text
                       :face face
                       :height (* 1.1 doom-modeline-icons-scale-factor)
-                      :v-adjust -0.225))
+                      :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor)))
 
 (defvar-local doom-modeline--buffer-file-state-icon nil)
 (defun doom-modeline-update-buffer-file-state-icon (&rest _)
@@ -551,7 +551,7 @@ mouse-3: Toggle minor modes"))
 		     local-map ,mode-line-minor-mode-keymap)
             ,(doom-modeline-spc)
             (:propertize ("" ,(doom-modeline-icon 'octicon "gear" "⚙" ";-"
-                                                  :face face :v-adjust -0.05))
+                                                  :face face :v-adjust (* -0.05 doom-modeline-icons-v-adjust-factor)))
              mouse-face ,mouse-face
              help-echo "Minions
 mouse-1: Display minor modes menu"
@@ -575,7 +575,7 @@ mouse-1: Display minor modes menu"
 UNICODE and TEXT are fallbacks.
 Uses `all-the-icons-octicon' to fetch the icon."
   (doom-modeline-icon 'octicon icon unicode text
-                      :face face :v-adjust (or voffset -0.1)))
+                      :face face :v-adjust (* (or voffset -0.1) doom-modeline-icons-v-adjust-factor)))
 
 (defvar-local doom-modeline--vcs-icon nil)
 (defun doom-modeline-update-vcs-icon (&rest _)
@@ -673,7 +673,7 @@ Uses `all-the-icons-octicon' to fetch the icon."
 UNICODE and TEXT are fallbacks.
 Uses `all-the-icons-material' to fetch the icon."
   (doom-modeline-icon 'material icon unicode text
-                      :face face :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust -0.225))
+                      :face face :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor)))
 
 (defun doom-modeline-checker-text (text &optional face)
   "Displays TEXT with FACE."
@@ -1075,11 +1075,11 @@ lines are selected, or the NxM dimensions of a block selection."
                                (char-to-string evil-this-macro)
                              "Macro")
                            :face 'doom-modeline-panel
-                           :v-adjust -0.225)
+                           :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor))
        vsep
        (doom-modeline-icon 'octicon "triangle-right" "▶" ">"
                            :face 'doom-modeline-panel
-                           :v-adjust -0.05)
+                           :v-adjust (* -0.05 doom-modeline-icons-v-adjust-factor))
        sep))))
 
 ;; `anzu' and `evil-anzu' expose current/total state that can be displayed in the
@@ -1201,7 +1201,7 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
     (when count
       (concat (propertize " " 'face face)
               (or (doom-modeline-icon 'faicon "i-cursor" nil nil
-                                      :face face :v-adjust -0.0575)
+                                      :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor))
                   (propertize "I"
                               'face `(:inherit ,face :height 1.4 :weight normal)
                               'display '(raise -0.1)))
@@ -1399,7 +1399,7 @@ Requires `eyebrowse-mode' or `tab-bar-mode' to be enabled."
                  (icon (doom-modeline-icon 'material "folder" "🖿" "#"
                                            :face `(:inherit ,face :slant normal)
                                            :height (* 1.1 doom-modeline-icons-scale-factor)
-                                           :v-adjust -0.225)))
+                                           :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor))))
             (when (or doom-modeline-display-default-persp-name
                       (not (string-equal persp-nil-name name)))
               (concat (doom-modeline-spc)
@@ -1539,7 +1539,7 @@ TEXT is alternative if icon is not available."
                "●"
                text
                :face (if (doom-modeline--active) face 'doom-modeline-inactive)
-               :v-adjust -0.225)
+               :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor))
               'help-echo help-echo))
 
 (defsubst doom-modeline--evil ()
@@ -1696,7 +1696,7 @@ mouse-3: Describe current input method")
 (defun doom-modeline-lsp-icon (text face)
   "Display LSP icon (or TEXT in terminal) with FACE."
   (doom-modeline-icon 'faicon "rocket" "🚀" text
-                      :face face :height (* 1.0 doom-modeline-icons-scale-factor) :v-adjust -0.0575))
+                      :face face :height (* 1.0 doom-modeline-icons-scale-factor) :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor)))
 
 (defvar-local doom-modeline--lsp nil)
 (defun doom-modeline-update-lsp (&rest _)
@@ -1890,7 +1890,7 @@ Example:
       (concat
        (doom-modeline-icon 'faicon "github" "🔔" "#"
                            :face 'doom-modeline-warning
-                           :v-adjust -0.0575)
+                           :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor))
        (doom-modeline-vspc)
        (propertize
         (if (> doom-modeline--github-notification-number doom-modeline-number-limit)
@@ -1941,7 +1941,7 @@ mouse-3: Fetch notifications"
 
 (defun doom-modeline-debug-icon (face &rest args)
   "Display debug icon with FACE and ARGS."
-  (doom-modeline-icon 'faicon "bug" "🐛" "!" :face face :v-adjust -0.0575 args))
+  (doom-modeline-icon 'faicon "bug" "🐛" "!" :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor) args))
 
 (defun doom-modeline--debug-dap ()
   "The current `dap-mode' state."
@@ -2067,7 +2067,7 @@ mouse-1: Toggle Debug on Quit"
       (concat
        (doom-modeline-icon 'material "email" "📧" "#"
                            :face 'doom-modeline-warning
-                           :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust -0.2)
+                           :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust (* -0.2 doom-modeline-icons-v-adjust-factor))
        (doom-modeline-vspc)
        (propertize
         (if (> mu4e-alert-mode-line doom-modeline-number-limit)
@@ -2158,7 +2158,7 @@ mouse-1: Toggle Debug on Quit"
       (concat
        (doom-modeline-icon 'material "email" "📧" "#"
                            :face 'doom-modeline-warning
-                           :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust -0.2)
+                           :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust (* -0.2 doom-modeline-icons-v-adjust-factor))
        (doom-modeline-vspc)
        (propertize
         (if (> doom-modeline--gnus-unread-mail doom-modeline-number-limit)
@@ -2261,7 +2261,7 @@ to be an icon and we don't want to remove that so we just return the original."
          (propertize (concat
                       (doom-modeline-icon 'material "message" "🗊" "#"
                                           :face 'doom-modeline-warning
-                                          :height (* 1.0 doom-modeline-icons-scale-factor) :v-adjust -0.225)
+                                          :height (* 1.0 doom-modeline-icons-scale-factor) :v-adjust (* -0.225 doom-modeline-icons-v-adjust-factor))
                       (doom-modeline-vspc)
                       ;; Display the number of unread buffers
                       (propertize (number-to-string number)
@@ -2348,23 +2348,23 @@ mouse-3: Switch to next unread buffer")))
                  (icon (if valid-percentage?
                            (cond (charging?
                                   (doom-modeline-icon 'alltheicon "battery-charging" "🔋" "+"
-                                                      :face face :height (* 1.4 doom-modeline-icons-scale-factor) :v-adjust -0.1))
+                                                      :face face :height (* 1.4 doom-modeline-icons-scale-factor) :v-adjust (* -0.1 doom-modeline-icons-v-adjust-factor)))
                                  ((> percentage 95)
                                   (doom-modeline-icon 'faicon "battery-full" "🔋" "-"
-                                                      :face face :v-adjust -0.0575))
+                                                      :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor)))
                                  ((> percentage 70)
                                   (doom-modeline-icon 'faicon "battery-three-quarters" "🔋" "-"
-                                                      :face face :v-adjust -0.0575))
+                                                      :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor)))
                                  ((> percentage 40)
                                   (doom-modeline-icon 'faicon "battery-half" "🔋" "-"
-                                                      :face face :v-adjust -0.0575))
+                                                      :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor)))
                                  ((> percentage battery-load-critical)
                                   (doom-modeline-icon 'faicon "battery-quarter" "🔋" "-"
-                                                      :face face :v-adjust -0.0575))
+                                                      :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor)))
                                  (t (doom-modeline-icon 'faicon "battery-empty" "🔋" "!"
-                                                        :face face :v-adjust -0.0575)))
+                                                        :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor))))
                          (doom-modeline-icon 'faicon "battery-empty" "⚠" "N/A"
-                                             :face face :v-adjust -0.0575)))
+                                             :face face :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor))))
                  (text (if valid-percentage? (format "%d%%%%" percentage) ""))
                  (help-echo (if (and battery-echo-area-format data valid-percentage?)
                                 (battery-format battery-echo-area-format data)
@@ -2442,7 +2442,7 @@ mouse-3: Switch to next unread buffer")))
                                         'doom-modeline)
                                     'doom-modeline-inactive)
                             :height (* 1.0 doom-modeline-icons-scale-factor)
-                            :v-adjust -0.0575)))
+                            :v-adjust (* -0.0575 doom-modeline-icons-v-adjust-factor))))
      (let ((info (format-mode-line 'mode-line-buffer-identification)))
        (if active
            info
@@ -2480,7 +2480,7 @@ The cdr can also be a function that returns a name to use.")
                                           'doom-modeline)
                                       'doom-modeline-inactive)
                               :height (* 1.0 doom-modeline-icons-scale-factor)
-                              :v-adjust -0.15)
+                              :v-adjust (* -0.15 doom-modeline-icons-v-adjust-factor))
           (doom-modeline-spc)))
        (propertize
         (let ((custom (cdr (assoc (buffer-name) doom-modeline--helm-buffer-ids)))
@@ -2559,7 +2559,7 @@ The cdr can also be a function that returns a name to use.")
                          :face (if active
                                    '(:inherit doom-modeline-warning :weight normal)
                                  'doom-modeline-inactive)
-                         :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust -0.25)
+                         :height (* 1.1 doom-modeline-icons-scale-factor) :v-adjust (* -0.25 doom-modeline-icons-v-adjust-factor))
      (and doom-modeline-icon (doom-modeline-vspc))
      ;; Buffer name
      (propertize "*%b*" 'face (if active
@@ -2586,7 +2586,7 @@ The cdr can also be a function that returns a name to use.")
                                        :face (if doom-modeline-icon
                                                  `(:inherit ,face :weight normal)
                                                face)
-                                       :height (* 1.2 doom-modeline-icons-scale-factor) :v-adjust -0.2)
+                                       :height (* 1.2 doom-modeline-icons-scale-factor) :v-adjust (* -0.2 doom-modeline-icons-v-adjust-factor))
                    'help-echo (format "Preview on %s
 mouse-1: Preview in browser
 mouse-2: Stop preview
