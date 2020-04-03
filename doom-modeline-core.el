@@ -370,6 +370,10 @@ It requires `circe' or `erc' package."
   :type 'function
   :group 'doom-modeline)
 
+(defcustom doom-modeline-icons-scale-factor 1.0
+  "Scale factor for icons in ‘doom-modeline’"
+  :type 'float
+  :group 'doom-modeline)
 
 ;;
 ;; Faces
