@@ -239,10 +239,10 @@ buffer where knowing the current project directory is important."
                             (doom-modeline-icon 'faicon "file-o" nil nil
                                                 :face 'all-the-icons-dsilver
                                                 :height (* 0.9 doom-modeline-icons-scale-factor)
-                                                :v-adjust (* 0.0 doom-modeline-icons-v-adjust-factor))
+                                                :v-adjust 0.0)
                           icon)
                         'help-echo (format "Major-mode: %s" (format-mode-line mode-name))
-                        'display `(raise ,(* -0.135 doom-modeline-icons-v-adjust-factor)))))))
+                        'display  '(raise 0.0))))))
 (add-hook 'find-file-hook #'doom-modeline-update-buffer-file-icon)
 (add-hook 'after-change-major-mode-hook #'doom-modeline-update-buffer-file-icon)
 (add-hook 'clone-indirect-buffer-hook #'doom-modeline-update-buffer-file-icon)
