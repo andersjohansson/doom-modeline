@@ -385,6 +385,13 @@ It requires `circe' or `erc' package."
   :group 'faces
   :link '(url-link :tag "Homepage" "https://github.com/seagle0128/doom-modeline"))
 
+(defface doom-modeline '((t (:inherit (mode-line))))
+  "Face used in ‘doom-modeline’ segments for modeline"
+  :group 'doom-modeline-faces)
+(defface doom-modeline-inactive '((t (:inherit (mode-line-inactive))))
+  "Face used in ‘doom-modeline’ segments for inactive modeline"
+  :group 'doom-modeline-faces)
+
 (defface doom-modeline-buffer-path
   '((t (:inherit (mode-line-emphasis bold))))
   "Face used for the dirname part of the buffer path."
@@ -471,7 +478,7 @@ It requires `circe' or `erc' package."
   :group 'doom-modeline-faces)
 
 (defface doom-modeline-bar-inactive
-  `((t (:background ,(face-foreground 'mode-line-inactive))))
+  `((t (:background ,(face-foreground 'doom-modeline-inactive))))
   "The face used for the left-most bar in the mode-line of an inactive window."
   :group 'doom-modeline-faces)
 
@@ -556,7 +563,7 @@ It requires `circe' or `erc' package."
   :group 'doom-modeline-faces)
 
 (defface doom-modeline-battery-normal
-  '((t (:inherit mode-line :weight normal)))
+  '((t (:inherit doom-modeline :weight normal)))
   "Face for battery normal status."
   :group 'doom-modeline-faces)
 
@@ -678,7 +685,7 @@ then this function does nothing."
 (defun doom-modeline-unfocus ()
   "Unfocus mode-line."
   (setq doom-modeline-remap-face-cookie
-        (face-remap-add-relative 'mode-line 'mode-line-inactive)))
+        (face-remap-add-relative 'doom-modeline 'doom-modeline-inactive)))
 
 (with-no-warnings
   (if (boundp 'after-focus-change-function)
@@ -739,9 +746,9 @@ then this function does nothing."
 (defvar doom-modeline--font-width-cache nil)
 (defun doom-modeline--font-width ()
   "Cache the font width."
-  (let ((attributes (face-all-attributes 'mode-line)))
+  (let ((attributes (face-all-attributes 'doom-modeline)))
     (or (cdr (assoc attributes doom-modeline--font-width-cache))
-        (let ((width (window-font-width nil 'mode-line)))
+        (let ((width (window-font-width nil 'doom-modeline)))
           (push (cons attributes width) doom-modeline--font-width-cache)
           width))))
 
@@ -773,7 +780,7 @@ Example:
         (list lhs-forms
               (propertize
                " "
-               'face (if (doom-modeline--active) 'mode-line 'mode-line-inactive)
+               'face (if (doom-modeline--active) 'doom-modeline 'doom-modeline-inactive)
                'display `((space
                            :align-to
                            (- (+ right right-fringe right-margin)
@@ -813,18 +820,18 @@ If DEFAULT is non-nil, set the default mode-line for all buffers."
 (defsubst doom-modeline-spc ()
   "Text style with whitespace."
   (propertize " " 'face (if (doom-modeline--active)
-                            'mode-line
-                          'mode-line-inactive)))
+                            'doom-modeline
+                          'doom-modeline-inactive)))
 
 (defsubst doom-modeline-vspc ()
   "Text style with icons in mode-line."
   (propertize " " 'face (if (doom-modeline--active)
                             'variable-pitch
-                          '(:inherit (variable-pitch mode-line-inactive)))))
+                          '(:inherit (variable-pitch doom-modeline-inactive)))))
 
 (defun doom-modeline--font-height ()
   "Calculate the actual char height of the mode-line."
-  (let ((height (face-attribute 'mode-line :height)))
+  (let ((height (face-attribute 'doom-modeline :height)))
     ;; WORKAROUND: Fix tall issue of 27 on Linux
     ;; @see https://github.com/seagle0128/doom-modeline/issues/271
     (round
@@ -865,7 +872,7 @@ See https://github.com/seagle0128/doom-modeline/issues/301."
 ICON-SET includes `octicon', `faicon', `material', `alltheicons' and `fileicon'.
 UNICODE is the unicode char fallback. TEXT is the ASCII char fallback.
 ARGS is same as `all-the-icons-octicon' and others."
-  (let ((face (or (plist-get args :face) 'mode-line)))
+  (let ((face (or (plist-get args :face) 'doom-modeline)))
     (or
      ;; Icons
      (when (and doom-modeline-icon
